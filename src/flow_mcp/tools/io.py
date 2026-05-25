@@ -85,7 +85,11 @@ def register(mcp: FastMCP, config: ServerConfig, cache: SampleCache) -> None:
         except Exception as exc:
             return UnsupportedFormatError(path, str(exc)).to_dict()
 
-        sample_id = Path(path).stem
+        # Build a unique sample_id from the relative path so that files with the
+        # same stem in different subdirectories don't silently collide in the cache.
+        # e.g. "dir1/a.fcs" → "dir1__a", "a.fcs" → "a".
+        rel = Path(path).with_suffix("")
+        sample_id = "__".join(rel.parts) if rel.parts else rel.stem
         cache.put(sample_id, sample)
 
         channels = [sample.pnn_labels[i] for i in range(len(sample.pnn_labels))]

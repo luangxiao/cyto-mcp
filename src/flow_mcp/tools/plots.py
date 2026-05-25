@@ -20,7 +20,9 @@ Registered tools
 from __future__ import annotations
 
 import json
+import re
 from pathlib import Path
+from typing import Any
 
 import matplotlib
 matplotlib.use("Agg")  # non-interactive backend; must be set before importing pyplot
@@ -34,6 +36,15 @@ from flow_mcp.config import ServerConfig
 from flow_mcp.errors import ChannelNotFoundError, FlowMcpError, SampleNotFoundError
 from flow_mcp.utils.image import figure_to_png
 from flow_mcp.utils.paths import make_output_path
+
+# Characters that are illegal in filenames on Windows (also covers POSIX safely).
+_UNSAFE_FILENAME_CHARS = re.compile(r'[<>:"/\\|?*\x00-\x1f]+')
+
+
+def _safe_filename(name: str) -> str:
+    """Return *name* with characters illegal in filenames replaced by ``_``."""
+    cleaned = _UNSAFE_FILENAME_CHARS.sub("_", name).strip(". ")
+    return cleaned or "plot"
 
 
 def _require_sample(cache: SampleCache, sample_id: str) -> fk.Sample:
@@ -80,7 +91,7 @@ def register(mcp: FastMCP, config: ServerConfig, cache: SampleCache) -> None:
         alpha: float = 0.3,
         point_size: float = 1.0,
         title: str | None = None,
-    ) -> dict:
+    ) -> Any:
         """Render a 2-D scatter plot of two channels.
 
         The PNG is returned inline (for immediate display in the AI client)
@@ -145,7 +156,7 @@ def register(mcp: FastMCP, config: ServerConfig, cache: SampleCache) -> None:
         fig.tight_layout()
 
         # ---- Persist PNG ----
-        filename = f"scatter_{x_channel}_{y_channel}.png".replace("/", "_")
+        filename = _safe_filename(f"scatter_{x_channel}_{y_channel}") + ".png"
         out_path = make_output_path(config.output_dir, sample_id, filename)
         png_bytes = figure_to_png(fig, dpi=config.plot_dpi)
         out_path.write_bytes(png_bytes)
@@ -181,7 +192,7 @@ def register(mcp: FastMCP, config: ServerConfig, cache: SampleCache) -> None:
         bins: int = 256,
         overlay_sample_ids: list[str] | None = None,
         title: str | None = None,
-    ) -> dict:
+    ) -> Any:
         """Render a 1-D histogram of a single channel.
 
         Optionally overlays histograms from multiple samples on the same axes,
@@ -242,7 +253,7 @@ def register(mcp: FastMCP, config: ServerConfig, cache: SampleCache) -> None:
             ax.legend(fontsize=8)
         fig.tight_layout()
 
-        filename = f"histogram_{channel}.png".replace("/", "_")
+        filename = _safe_filename(f"histogram_{channel}") + ".png"
         out_path = make_output_path(config.output_dir, sample_id, filename)
         png_bytes = figure_to_png(fig, dpi=config.plot_dpi)
         out_path.write_bytes(png_bytes)

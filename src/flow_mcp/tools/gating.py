@@ -31,13 +31,26 @@ def register(mcp: FastMCP, config: ServerConfig, cache: SampleCache) -> None:
     """Register all gating tools onto *mcp*."""
 
     # Each sample gets its own GatingStrategy stored in a parallel dict.
-    # This is intentionally kept simple for v0.1.
+    # Protected by a lock so callbacks from the cache can mutate it safely.
+    import threading
+
     gating_strategies: dict[str, fk.GatingStrategy] = {}
+    strategies_lock = threading.Lock()
+
+    def _drop_strategy(sample_id: str) -> None:
+        """Remove the gating strategy for *sample_id* when it leaves the cache."""
+        with strategies_lock:
+            gating_strategies.pop(sample_id, None)
+
+    # Tie strategy lifetime to the sample's presence in the cache so an
+    # evicted-then-reloaded sample doesn't accidentally inherit stale gates.
+    cache.on_evict(_drop_strategy)
 
     def _get_or_create_strategy(sample_id: str) -> fk.GatingStrategy:
-        if sample_id not in gating_strategies:
-            gating_strategies[sample_id] = fk.GatingStrategy()
-        return gating_strategies[sample_id]
+        with strategies_lock:
+            if sample_id not in gating_strategies:
+                gating_strategies[sample_id] = fk.GatingStrategy()
+            return gating_strategies[sample_id]
 
     # ------------------------------------------------------------------
 
@@ -78,23 +91,23 @@ def register(mcp: FastMCP, config: ServerConfig, cache: SampleCache) -> None:
         except FlowMcpError as exc:
             return exc.to_dict()
 
+        if x_min >= x_max or y_min >= y_max:
+            return GatingError(
+                f"Invalid gate bounds: require x_min < x_max and y_min < y_max "
+                f"(got x=[{x_min}, {x_max}], y=[{y_min}, {y_max}])."
+            ).to_dict()
+
         all_channels = list(sample.pnn_labels)
         for ch in (x_channel, y_channel):
             if ch not in all_channels:
                 return ChannelNotFoundError(ch, all_channels).to_dict()
 
         try:
-            dims = [
-                fk.gates.QuadrantGate.Quadrant(
-                    quadrant_id=gate_name + "_dim0",
-                    divider_refs=[],
-                ),
-            ]
             rect_gate = fk.gates.RectangleGate(
                 gate_name=gate_name,
                 dimensions=[
-                    fk.Dimension(id=x_channel, min=x_min, max=x_max),
-                    fk.Dimension(id=y_channel, min=y_min, max=y_max),
+                    fk.Dimension(dimension_id=x_channel, range_min=x_min, range_max=x_max),
+                    fk.Dimension(dimension_id=y_channel, range_min=y_min, range_max=y_max),
                 ],
             )
             strategy = _get_or_create_strategy(sample_id)

@@ -30,14 +30,12 @@ that the server sends back.
 |---|---|
 | **File I/O** | List, load, validate FCS files; read FCS keywords |
 | **Preprocessing** | Apply compensation matrix; Logicle / asinh / biexp transform |
-| **Quality control** | Time-drift detection, saturated-event flagging |
 | **Subsampling** | Reproducible down-sampling for fast exploration |
 | **Statistics** | Per-channel percentile stats; cross-sample comparison |
-| **Gating** | Rectangle, polygon, ellipse, quadrant, threshold gates |
-| **Visualization** | Scatter plots, histograms, density overlays — returned as PNG + structured JSON |
-| **Reporting** | Markdown / HTML summary reports |
+| **Gating** | Rectangle and threshold gates; population frequency & MFI |
+| **Visualization** | Scatter plots and histograms — returned as PNG + structured JSON |
 
-*Advanced clustering (FlowSOM, UMAP) is planned for v0.2.*
+*Quality control (time-drift, saturation flagging), polygon/ellipse gates, reporting, and clustering (FlowSOM, UMAP) are planned for v0.2.*
 
 ---
 
@@ -128,11 +126,10 @@ src/flow_mcp/
 ├── cache.py           # LRU in-memory sample cache
 ├── tools/
 │   ├── io.py          # load_fcs, list_fcs, fcs_keywords, validate_fcs
-│   ├── preprocess.py  # apply_compensation, transform
-│   ├── qc.py          # quality_check
+│   ├── preprocess.py  # apply_compensation, transform, subsample
 │   ├── stats.py       # channel_stats, compare_samples
-│   ├── gating.py      # gate_*, population_stats
-│   └── plots.py       # scatter_plot, histogram, density_plot
+│   ├── gating.py      # gate_rectangle, gate_threshold, population_stats
+│   └── plots.py       # scatter_plot, histogram
 └── utils/
     ├── image.py       # fig → PNG bytes helper
     └── paths.py       # safe path resolution within data-dir sandbox

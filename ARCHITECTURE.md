@@ -21,7 +21,6 @@ cyto-mcp/
 │       │   ├── __init__.py
 │       │   ├── io.py       # File discovery & loading
 │       │   ├── preprocess.py
-│       │   ├── qc.py
 │       │   ├── stats.py
 │       │   ├── gating.py
 │       │   └── plots.py

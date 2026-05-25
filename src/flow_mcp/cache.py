@@ -12,7 +12,7 @@ from __future__ import annotations
 
 import threading
 from collections import OrderedDict
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Callable
 
 import flowkit as fk
 
@@ -29,6 +29,29 @@ class SampleCache:
         self._max_size = max_size
         self._store: OrderedDict[str, fk.Sample] = OrderedDict()
         self._lock = threading.Lock()
+        self._on_evict: list[Callable[[str], None]] = []
+
+    # ------------------------------------------------------------------
+    # Eviction hooks
+    # ------------------------------------------------------------------
+
+    def on_evict(self, callback: Callable[[str], None]) -> None:
+        """Register a callback invoked with the sample_id whenever a sample
+        is removed (explicit evict, LRU overflow, or clear).
+
+        Callbacks are called outside the cache lock so they may safely
+        acquire their own locks. Exceptions in callbacks are swallowed to
+        avoid corrupting cache state.
+        """
+        self._on_evict.append(callback)
+
+    def _notify_evict(self, sample_ids: list[str]) -> None:
+        for sid in sample_ids:
+            for cb in self._on_evict:
+                try:
+                    cb(sid)
+                except Exception:  # noqa: BLE001 — isolation between hooks
+                    pass
 
     # ------------------------------------------------------------------
     # Public API
@@ -50,28 +73,36 @@ class SampleCache:
 
         If the cache is full, the least recently used entry is evicted first.
         """
+        evicted: list[str] = []
         with self._lock:
             if sample_id in self._store:
                 self._store.move_to_end(sample_id)
             self._store[sample_id] = sample
             if len(self._store) > self._max_size:
-                self._store.popitem(last=False)  # evict LRU (oldest) entry
+                lru_id, _ = self._store.popitem(last=False)  # evict LRU (oldest) entry
+                evicted.append(lru_id)
+        self._notify_evict(evicted)
 
     def evict(self, sample_id: str) -> bool:
         """Explicitly remove a sample from the cache.
 
         Returns ``True`` if the sample was present and removed.
         """
+        removed = False
         with self._lock:
             if sample_id in self._store:
                 del self._store[sample_id]
-                return True
-            return False
+                removed = True
+        if removed:
+            self._notify_evict([sample_id])
+        return removed
 
     def clear(self) -> None:
         """Remove all entries from the cache."""
         with self._lock:
+            ids = list(self._store.keys())
             self._store.clear()
+        self._notify_evict(ids)
 
     # ------------------------------------------------------------------
     # Introspection
