@@ -1,0 +1,16 @@
+{
+  "_comment": "VS Code MCP server config. Place this file at .vscode/mcp.json in your workspace. Requires VS Code >= 1.99 with GitHub Copilot Chat.",
+  "servers": {
+    "flow": {
+      "type": "stdio",
+      "command": "uv",
+      "args": [
+        "run",
+        "--directory", "${workspaceFolder}",
+        "cyto-mcp", "serve",
+        "--data-dir", "${workspaceFolder}/data",
+        "--output-dir", "${workspaceFolder}/outputs"
+      ]
+    }
+  }
+}

@@ -1,0 +1,27 @@
+{
+  // VS Code MCP server configuration for cyto-mcp (development).
+  // Requires VS Code >= 1.99 with GitHub Copilot Chat.
+  //
+  // Prerequisites:
+  //   1. Install uv: https://docs.astral.sh/uv/getting-started/installation/
+  //   2. Run: uv sync   (installs all dependencies into .venv)
+  //   3. Run: uv run python scripts/download_demo_data.py   (downloads demo FCS files)
+  //
+  // If VS Code cannot find `uv`, use its full path, e.g.:
+  //   Windows : "C:/Users/<you>/.local/bin/uv.exe"
+  //   macOS   : "/Users/<you>/.local/bin/uv"
+  //   Linux   : "/home/<you>/.local/bin/uv"
+  "servers": {
+    "flow": {
+      "type": "stdio",
+      "command": "uv",
+      "args": [
+        "run",
+        "--directory", "${workspaceFolder}",
+        "cyto-mcp", "serve",
+        "--data-dir", "${workspaceFolder}/src/flow_mcp/fcs_demo",
+        "--output-dir", "${workspaceFolder}/outputs"
+      ]
+    }
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "_comment": "Claude Desktop configuration for flow-mcp. Copy the 'flow' block into your claude_desktop_config.json.",
+  "mcpServers": {
+    "flow": {
+      "command": "uv",
+      "args": [
+        "run",
+        "--directory", "/path/to/flow-mcp",
+        "cyto-mcp", "serve",
+        "--data-dir", "/path/to/your/fcs/files",
+        "--output-dir", "/path/to/outputs"
+      ],
+      "env": {
+        "_comment": "Alternatively, set FLOW_MCP_DATA_DIR here instead of using --data-dir"
+      }
+    }
+  }
+}

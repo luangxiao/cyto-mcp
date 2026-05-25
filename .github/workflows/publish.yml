@@ -1,0 +1,32 @@
+name: Publish to PyPI
+
+on:
+  push:
+    tags:
+      - "v*"          # triggers on v0.1.0, v0.2.0, etc.
+
+permissions:
+  contents: read
+  id-token: write   # required for trusted publishing (no token needed)
+
+jobs:
+  build-and-publish:
+    runs-on: ubuntu-latest
+    environment: pypi   # set this up in GitHub repo Settings → Environments
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+
+      - name: Set up Python
+        run: uv python install
+
+      - name: Build
+        run: uv build
+
+      - name: Publish to PyPI
+        run: uv publish
+        # Uses OIDC trusted publishing — no PyPI token needed in GitHub secrets!
+        # Set up at: https://pypi.org/manage/project/cyto-mcp/settings/publishing/

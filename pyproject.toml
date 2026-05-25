@@ -1,0 +1,79 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "cyto-mcp"
+version = "0.1.0"
+description = "A Model Context Protocol (MCP) server for flow cytometry data analysis"
+readme = "README.md"
+license = { file = "LICENSE" }
+requires-python = ">=3.11"
+keywords = ["cyto-mcp", "flow-cytometry", "fcs", "mcp", "bioinformatics", "immunology"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Science/Research",
+    "Topic :: Scientific/Engineering :: Bio-Informatics",
+    "License :: OSI Approved :: Apache Software License",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+]
+
+dependencies = [
+    "mcp[cli]>=1.6.0",
+    "flowkit>=1.1.0",
+    "numpy>=1.26.0",
+    "matplotlib>=3.8.0",
+    "seaborn>=0.13.0",
+    "scipy>=1.12.0",
+    "pydantic>=2.7.0",
+    "pydantic-settings>=2.3.0",
+    "click>=8.1.0",
+]
+
+[project.optional-dependencies]
+# Optional advanced analysis features
+advanced = [
+    "umap-learn>=0.5.0",
+    "scikit-learn>=1.4.0",
+    "anndata>=0.10.0",
+]
+dev = [
+    "pytest>=8.0.0",
+    "pytest-asyncio>=0.23.0",
+    "ruff>=0.4.0",
+    "mypy>=1.9.0",
+    "pre-commit>=3.7.0",
+]
+
+[project.scripts]
+cyto-mcp = "flow_mcp.cli:main"
+
+[project.urls]
+Homepage = "https://github.com/luangxiao/cyto-mcp"
+Repository = "https://github.com/luangxiao/cyto-mcp"
+Issues = "https://github.com/luangxiao/cyto-mcp/issues"
+
+# ---------------------------------------------------------------------------
+# Tool configuration
+# ---------------------------------------------------------------------------
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/flow_mcp"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+src = ["src"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "SIM"]
+
+[tool.mypy]
+python_version = "3.11"
+strict = true
+ignore_missing_imports = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+asyncio_mode = "auto"

@@ -1,0 +1,3 @@
+# FCS demo files are downloaded at dev time, not committed to git.
+# Run: uv run python scripts/download_demo_data.py  (coming soon)
+*.fcs

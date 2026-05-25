@@ -1,0 +1,44 @@
+# Python
+__pycache__/
+**/__pycache__/
+*.py[cod]
+*.egg-info/
+dist/
+build/
+.venv/
+.env
+
+# uv — commit uv.lock for reproducible contributor installs
+# uv.lock   ← intentionally NOT ignored
+.python-version
+
+# Test & coverage
+.pytest_cache/
+**/.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+htmlcov/
+.coverage
+coverage.xml
+
+# IDE — ignore personal settings, keep shared configs
+.vscode/settings.json
+.vscode/*.code-snippets
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Project runtime — plots and reports written by the server
+# The outputs/ folder itself is tracked via outputs/.gitkeep
+outputs/**
+!outputs/.gitkeep
+*.fcs.cache
+
+# Secrets / config overrides — never commit these
+.env.local
+.env.*.local
+*.license
+*.key
