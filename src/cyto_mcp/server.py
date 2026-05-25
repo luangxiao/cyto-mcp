@@ -10,10 +10,10 @@ from __future__ import annotations
 
 from mcp.server.fastmcp import FastMCP
 
-from flow_mcp import __version__
-from flow_mcp.cache import SampleCache
-from flow_mcp.config import ServerConfig
-from flow_mcp.tools import gating, io, plots, preprocess, stats
+from cyto_mcp import __version__
+from cyto_mcp.cache import SampleCache
+from cyto_mcp.config import ServerConfig
+from cyto_mcp.tools import gating, io, plots, preprocess, stats
 
 
 def create_server(config: ServerConfig) -> FastMCP:

@@ -15,9 +15,9 @@ import numpy as np
 import flowkit as fk
 from mcp.server.fastmcp import FastMCP
 
-from flow_mcp.cache import SampleCache
-from flow_mcp.config import ServerConfig
-from flow_mcp.errors import ChannelNotFoundError, FlowMcpError, GatingError, SampleNotFoundError
+from cyto_mcp.cache import SampleCache
+from cyto_mcp.config import ServerConfig
+from cyto_mcp.errors import ChannelNotFoundError, CytoMcpError, GatingError, SampleNotFoundError
 
 
 def _require_sample(cache: SampleCache, sample_id: str) -> fk.Sample:
@@ -88,7 +88,7 @@ def register(mcp: FastMCP, config: ServerConfig, cache: SampleCache) -> None:
         """
         try:
             sample = _require_sample(cache, sample_id)
-        except FlowMcpError as exc:
+        except CytoMcpError as exc:
             return exc.to_dict()
 
         if x_min >= x_max or y_min >= y_max:
@@ -157,7 +157,7 @@ def register(mcp: FastMCP, config: ServerConfig, cache: SampleCache) -> None:
         """
         try:
             sample = _require_sample(cache, sample_id)
-        except FlowMcpError as exc:
+        except CytoMcpError as exc:
             return exc.to_dict()
 
         all_channels = list(sample.pnn_labels)
@@ -221,7 +221,7 @@ def register(mcp: FastMCP, config: ServerConfig, cache: SampleCache) -> None:
         """
         try:
             sample = _require_sample(cache, sample_id)
-        except FlowMcpError as exc:
+        except CytoMcpError as exc:
             return exc.to_dict()
 
         strategy = gating_strategies.get(sample_id)

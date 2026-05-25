@@ -14,8 +14,8 @@ from pathlib import Path
 import numpy as np
 import pytest
 
-from flow_mcp.cache import SampleCache
-from flow_mcp.config import ServerConfig
+from cyto_mcp.cache import SampleCache
+from cyto_mcp.config import ServerConfig
 
 
 def _write_minimal_fcs(path: Path, n_events: int = 500, n_channels: int = 6) -> None:

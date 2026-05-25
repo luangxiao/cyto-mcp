@@ -1,11 +1,11 @@
-"""Tests for flow_mcp.cache."""
+"""Tests for cyto_mcp.cache."""
 
 from __future__ import annotations
 
 import flowkit as fk
 import pytest
 
-from flow_mcp.cache import SampleCache
+from cyto_mcp.cache import SampleCache
 
 
 def _dummy_sample(path: str) -> fk.Sample:

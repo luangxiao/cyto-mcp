@@ -13,15 +13,15 @@ import numpy as np
 import flowkit as fk
 from mcp.server.fastmcp import FastMCP
 
-from flow_mcp.cache import SampleCache
-from flow_mcp.config import ServerConfig
-from flow_mcp.errors import (
+from cyto_mcp.cache import SampleCache
+from cyto_mcp.config import ServerConfig
+from cyto_mcp.errors import (
     ChannelNotFoundError,
     CompensationError,
-    FlowMcpError,
+    CytoMcpError,
     SampleNotFoundError,
 )
-from flow_mcp.utils.paths import resolve_data_path
+from cyto_mcp.utils.paths import resolve_data_path
 
 
 def _require_sample(cache: SampleCache, sample_id: str) -> fk.Sample:
@@ -65,7 +65,7 @@ def register(mcp: FastMCP, config: ServerConfig, cache: SampleCache) -> None:
         """
         try:
             sample = _require_sample(cache, sample_id)
-        except FlowMcpError as exc:
+        except CytoMcpError as exc:
             return exc.to_dict()
 
         try:
@@ -143,7 +143,7 @@ def register(mcp: FastMCP, config: ServerConfig, cache: SampleCache) -> None:
         """
         try:
             sample = _require_sample(cache, sample_id)
-        except FlowMcpError as exc:
+        except CytoMcpError as exc:
             return exc.to_dict()
 
         # Determine target channels
@@ -247,7 +247,7 @@ def register(mcp: FastMCP, config: ServerConfig, cache: SampleCache) -> None:
         """
         try:
             sample = _require_sample(cache, sample_id)
-        except FlowMcpError as exc:
+        except CytoMcpError as exc:
             return exc.to_dict()
 
         original_count = sample.event_count

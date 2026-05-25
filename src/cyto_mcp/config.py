@@ -2,7 +2,7 @@
 
 Values are resolved in priority order:
 1. CLI flags (passed explicitly at startup)
-2. Environment variables (prefixed ``FLOW_MCP_``)
+2. Environment variables (prefixed ``CYTO_MCP_``)
 3. Hard-coded defaults below
 """
 
@@ -18,7 +18,7 @@ class ServerConfig(BaseSettings):
     """Runtime configuration for the cyto-mcp server."""
 
     model_config = SettingsConfigDict(
-        env_prefix="FLOW_MCP_",
+        env_prefix="CYTO_MCP_",
         env_file=".env",
         env_file_encoding="utf-8",
     )

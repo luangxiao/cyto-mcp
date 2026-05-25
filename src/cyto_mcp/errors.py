@@ -1,14 +1,14 @@
 """Typed error hierarchy for cyto-mcp.
 
-All domain errors inherit from ``FlowMcpError`` so callers can catch them
-with a single ``except FlowMcpError`` clause and still distinguish sub-types
+All domain errors inherit from ``CytoMcpError`` so callers can catch them
+with a single ``except CytoMcpError`` clause and still distinguish sub-types
 when needed.
 """
 
 from __future__ import annotations
 
 
-class FlowMcpError(Exception):
+class CytoMcpError(Exception):
     """Base class for all cyto-mcp errors."""
 
     def to_dict(self) -> dict[str, str]:
@@ -16,7 +16,7 @@ class FlowMcpError(Exception):
         return {"error": type(self).__name__, "message": str(self)}
 
 
-class SampleNotFoundError(FlowMcpError):
+class SampleNotFoundError(CytoMcpError):
     """Raised when a requested sample_id is not cached and cannot be found on disk."""
 
     def __init__(self, sample_id: str) -> None:
@@ -27,7 +27,7 @@ class SampleNotFoundError(FlowMcpError):
         self.sample_id = sample_id
 
 
-class ChannelNotFoundError(FlowMcpError):
+class ChannelNotFoundError(CytoMcpError):
     """Raised when a requested channel name is absent from the FCS file."""
 
     def __init__(self, channel: str, available: list[str]) -> None:
@@ -39,7 +39,7 @@ class ChannelNotFoundError(FlowMcpError):
         self.available = available
 
 
-class PathTraversalError(FlowMcpError):
+class PathTraversalError(CytoMcpError):
     """Raised when a caller-supplied path escapes the configured data directory."""
 
     def __init__(self, attempted_path: str) -> None:
@@ -50,7 +50,7 @@ class PathTraversalError(FlowMcpError):
         self.attempted_path = attempted_path
 
 
-class UnsupportedFormatError(FlowMcpError):
+class UnsupportedFormatError(CytoMcpError):
     """Raised when a file is not a valid / supported FCS file."""
 
     def __init__(self, path: str, reason: str = "") -> None:
@@ -61,14 +61,14 @@ class UnsupportedFormatError(FlowMcpError):
         self.path = path
 
 
-class GatingError(FlowMcpError):
+class GatingError(CytoMcpError):
     """Raised when a gate specification is malformed or incompatible with the sample."""
 
     def __init__(self, message: str) -> None:
         super().__init__(message)
 
 
-class CompensationError(FlowMcpError):
+class CompensationError(CytoMcpError):
     """Raised when compensation cannot be applied (e.g., matrix dimension mismatch)."""
 
     def __init__(self, message: str) -> None:

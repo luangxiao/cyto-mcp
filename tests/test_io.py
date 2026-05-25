@@ -5,7 +5,7 @@ from __future__ import annotations
 import pytest
 from mcp.server.fastmcp import FastMCP
 
-from flow_mcp.tools import io
+from cyto_mcp.tools import io
 
 
 def _make_mcp_with_io(server_config, cache):

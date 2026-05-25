@@ -47,7 +47,7 @@ dev = [
 ]
 
 [project.scripts]
-cyto-mcp = "flow_mcp.cli:main"
+cyto-mcp = "cyto_mcp.cli:main"
 
 [project.urls]
 Homepage = "https://github.com/luangxiao/cyto-mcp"
@@ -59,7 +59,7 @@ Issues = "https://github.com/luangxiao/cyto-mcp/issues"
 # ---------------------------------------------------------------------------
 
 [tool.hatch.build.targets.wheel]
-packages = ["src/flow_mcp"]
+packages = ["src/cyto_mcp"]
 
 [tool.ruff]
 line-length = 100

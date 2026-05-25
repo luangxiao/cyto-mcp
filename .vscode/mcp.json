@@ -12,14 +12,14 @@
   //   macOS   : "/Users/<you>/.local/bin/uv"
   //   Linux   : "/home/<you>/.local/bin/uv"
   "servers": {
-    "flow": {
+    "cyto": {
       "type": "stdio",
       "command": "uv",
       "args": [
         "run",
         "--directory", "${workspaceFolder}",
         "cyto-mcp", "serve",
-        "--data-dir", "${workspaceFolder}/src/flow_mcp/fcs_demo",
+        "--data-dir", "${workspaceFolder}/src/cyto_mcp/fcs_demo",
         "--output-dir", "${workspaceFolder}/outputs"
       ]
     }

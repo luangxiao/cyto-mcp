@@ -21,8 +21,8 @@ from pathlib import Path
 
 import click
 
-from flow_mcp import __version__
-from flow_mcp.config import ServerConfig
+from cyto_mcp import __version__
+from cyto_mcp.config import ServerConfig
 
 
 @click.group()
@@ -36,25 +36,25 @@ def main() -> None:
     "--data-dir",
     type=click.Path(file_okay=False, path_type=Path),
     default=None,
-    help="Root directory containing FCS files (env: FLOW_MCP_DATA_DIR).",
+    help="Root directory containing FCS files (env: CYTO_MCP_DATA_DIR).",
 )
 @click.option(
     "--output-dir",
     type=click.Path(file_okay=False, path_type=Path),
     default=None,
-    help="Directory for generated plots and reports (env: FLOW_MCP_OUTPUT_DIR).",
+    help="Directory for generated plots and reports (env: CYTO_MCP_OUTPUT_DIR).",
 )
 @click.option(
     "--cache-size",
     type=int,
     default=None,
-    help="Max number of FCS samples held in memory (env: FLOW_MCP_CACHE_SIZE).",
+    help="Max number of FCS samples held in memory (env: CYTO_MCP_CACHE_SIZE).",
 )
 @click.option(
     "--plot-dpi",
     type=int,
     default=None,
-    help="DPI for rendered PNG plots (env: FLOW_MCP_PLOT_DPI).",
+    help="DPI for rendered PNG plots (env: CYTO_MCP_PLOT_DPI).",
 )
 @click.option(
     "--transport",
@@ -85,7 +85,7 @@ def serve(
     config = ServerConfig(**overrides)
 
     # Late import avoids pulling in heavy deps before config validation
-    from flow_mcp.server import create_server
+    from cyto_mcp.server import create_server
 
     click.echo(f"cyto-mcp v{__version__}", err=True)
     click.echo(f"  data-dir   : {config.data_dir}", err=True)
@@ -179,3 +179,8 @@ def update(pre: bool) -> None:
     else:
         click.secho("Update failed. Check the output above for details.", fg="red")
         raise SystemExit(result.returncode)
+
+
+if __name__ == "__main__":
+    main()
+

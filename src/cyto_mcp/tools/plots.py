@@ -31,11 +31,11 @@ import numpy as np
 import flowkit as fk
 from mcp.server.fastmcp import FastMCP, Image
 
-from flow_mcp.cache import SampleCache
-from flow_mcp.config import ServerConfig
-from flow_mcp.errors import ChannelNotFoundError, FlowMcpError, SampleNotFoundError
-from flow_mcp.utils.image import figure_to_png
-from flow_mcp.utils.paths import make_output_path
+from cyto_mcp.cache import SampleCache
+from cyto_mcp.config import ServerConfig
+from cyto_mcp.errors import ChannelNotFoundError, CytoMcpError, SampleNotFoundError
+from cyto_mcp.utils.image import figure_to_png
+from cyto_mcp.utils.paths import make_output_path
 
 # Characters that are illegal in filenames on Windows (also covers POSIX safely).
 _UNSAFE_FILENAME_CHARS = re.compile(r'[<>:"/\\|?*\x00-\x1f]+')
@@ -120,14 +120,14 @@ def register(mcp: FastMCP, config: ServerConfig, cache: SampleCache) -> None:
         """
         try:
             sample = _require_sample(cache, sample_id)
-        except FlowMcpError as exc:
+        except CytoMcpError as exc:
             return exc.to_dict()
 
         rng = np.random.default_rng(42)
         try:
             x_arr = _get_channel_data(sample, x_channel, source, config.plot_max_events, rng)
             y_arr = _get_channel_data(sample, y_channel, source, config.plot_max_events, rng)
-        except FlowMcpError as exc:
+        except CytoMcpError as exc:
             return exc.to_dict()
 
         # Align lengths in case channels have different missing-value counts
@@ -146,7 +146,7 @@ def register(mcp: FastMCP, config: ServerConfig, cache: SampleCache) -> None:
                 sc = ax.scatter(x_arr, y_arr, c=c_arr, s=point_size, alpha=alpha,
                                 cmap="viridis", rasterized=True)
                 fig.colorbar(sc, ax=ax, label=color_channel)
-            except FlowMcpError:
+            except CytoMcpError:
                 ax.scatter(x_arr, y_arr, s=point_size, alpha=alpha, color="steelblue",
                            rasterized=True)
         else:
@@ -212,7 +212,7 @@ def register(mcp: FastMCP, config: ServerConfig, cache: SampleCache) -> None:
         """
         try:
             sample = _require_sample(cache, sample_id)
-        except FlowMcpError as exc:
+        except CytoMcpError as exc:
             return exc.to_dict()
 
         rng = np.random.default_rng(42)
@@ -233,7 +233,7 @@ def register(mcp: FastMCP, config: ServerConfig, cache: SampleCache) -> None:
         for sid, s in samples_to_plot:
             try:
                 arr = _get_channel_data(s, channel, source, config.plot_max_events, rng)
-            except FlowMcpError:
+            except CytoMcpError:
                 continue
 
             counts, edges = np.histogram(arr, bins=bins)

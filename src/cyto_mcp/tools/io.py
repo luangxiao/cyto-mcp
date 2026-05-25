@@ -17,10 +17,10 @@ from pathlib import Path
 import flowkit as fk
 from mcp.server.fastmcp import FastMCP
 
-from flow_mcp.cache import SampleCache
-from flow_mcp.config import ServerConfig
-from flow_mcp.errors import FlowMcpError, UnsupportedFormatError
-from flow_mcp.utils.paths import resolve_data_path
+from cyto_mcp.cache import SampleCache
+from cyto_mcp.config import ServerConfig
+from cyto_mcp.errors import CytoMcpError, UnsupportedFormatError
+from cyto_mcp.utils.paths import resolve_data_path
 
 
 def register(mcp: FastMCP, config: ServerConfig, cache: SampleCache) -> None:
@@ -41,7 +41,7 @@ def register(mcp: FastMCP, config: ServerConfig, cache: SampleCache) -> None:
         """
         try:
             scan_root = resolve_data_path(subdirectory, config.data_dir) if subdirectory else config.data_dir
-        except FlowMcpError as exc:
+        except CytoMcpError as exc:
             return exc.to_dict()
 
         if not scan_root.is_dir():
@@ -74,7 +74,7 @@ def register(mcp: FastMCP, config: ServerConfig, cache: SampleCache) -> None:
         """
         try:
             abs_path = resolve_data_path(path, config.data_dir)
-        except FlowMcpError as exc:
+        except CytoMcpError as exc:
             return exc.to_dict()
 
         if not abs_path.is_file():
@@ -126,7 +126,7 @@ def register(mcp: FastMCP, config: ServerConfig, cache: SampleCache) -> None:
         """
         try:
             abs_path = resolve_data_path(path, config.data_dir)
-        except FlowMcpError as exc:
+        except CytoMcpError as exc:
             return exc.to_dict()
 
         if not abs_path.is_file():
@@ -162,7 +162,7 @@ def register(mcp: FastMCP, config: ServerConfig, cache: SampleCache) -> None:
         """
         try:
             abs_path = resolve_data_path(path, config.data_dir)
-        except FlowMcpError as exc:
+        except CytoMcpError as exc:
             return {"valid": False, "issues": [str(exc)]}
 
         if not abs_path.is_file():

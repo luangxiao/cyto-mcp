@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from mcp.server.fastmcp import FastMCP
 
-from flow_mcp.tools import io, stats
+from cyto_mcp.tools import io, stats
 
 
 def _setup(server_config, cache):

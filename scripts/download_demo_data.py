@@ -37,7 +37,7 @@ FILES: list[tuple[str, str]] = [
      "8_color_data_set/101_DEN084Y5_15_E05_010_clean.fcs"),
 ]
 
-DEMO_DIR = Path(__file__).parent.parent / "src" / "flow_mcp" / "fcs_demo"
+DEMO_DIR = Path(__file__).parent.parent / "src" / "cyto_mcp" / "fcs_demo"
 
 
 def download(remote: str, local: Path) -> None:

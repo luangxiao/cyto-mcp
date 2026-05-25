@@ -118,7 +118,7 @@ See [ARCHITECTURE.md](ARCHITECTURE.md) for a detailed description of the codebas
 design decisions, and extension guide.
 
 ```
-src/flow_mcp/
+src/cyto_mcp/
 ├── server.py          # FastMCP app wiring and startup
 ├── cli.py             # click CLI entry point  (`cyto-mcp serve`)
 ├── config.py          # Pydantic settings (data-dir, output-dir, cache size)

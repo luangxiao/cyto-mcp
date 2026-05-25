@@ -10,7 +10,7 @@ and how to extend it with new tools.
 ```
 cyto-mcp/
 ├── src/
-│   └── flow_mcp/           # Main Python package
+│   └── cyto_mcp/           # Main Python package
 │       ├── __init__.py
 │       ├── server.py       # FastMCP app; registers all tools and starts the server
 │       ├── cli.py          # CLI entry point (`cyto-mcp serve [OPTIONS]`)
@@ -54,7 +54,7 @@ User prompt
 MCP Client (Claude Desktop / VS Code / Cursor)
     │  calls tool via JSON-RPC over stdio
     ▼
-flow_mcp.server  ──dispatches──►  tools/io.py
+cyto_mcp.server  ──dispatches──►  tools/io.py
                                   tools/preprocess.py
                                   tools/gating.py
                                   tools/stats.py
@@ -84,7 +84,7 @@ flow_mcp.server  ──dispatches──►  tools/io.py
 `ServerConfig` is a Pydantic `BaseSettings` model. Values are loaded (in order of priority) from:
 
 1. CLI flags (`--data-dir`, `--output-dir`, `--cache-size`)
-2. Environment variables (`FLOW_MCP_DATA_DIR`, etc.)
+2. Environment variables (`CYTO_MCP_DATA_DIR`, etc.)
 3. Hard-coded defaults
 
 This makes the server easy to configure in any deployment scenario without code changes.
@@ -145,7 +145,7 @@ without relying solely on visual interpretation, which is unreliable for dense c
 `errors.py` defines a typed hierarchy:
 
 ```
-FlowMcpError (base)
+CytoMcpError (base)
 ├── SampleNotFoundError     # requested sample_id not in cache and not on disk
 ├── ChannelNotFoundError    # requested channel name absent from the FCS file
 ├── PathTraversalError      # caller tried to escape --data-dir

@@ -11,7 +11,7 @@
         "--output-dir", "/path/to/outputs"
       ],
       "env": {
-        "_comment": "Alternatively, set FLOW_MCP_DATA_DIR here instead of using --data-dir"
+        "_comment": "Alternatively, set CYTO_MCP_DATA_DIR here instead of using --data-dir"
       }
     }
   }

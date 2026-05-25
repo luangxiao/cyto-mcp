@@ -9,7 +9,7 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from flow_mcp.errors import PathTraversalError
+from cyto_mcp.errors import PathTraversalError
 
 
 def resolve_data_path(user_path: str, data_dir: Path) -> Path:
