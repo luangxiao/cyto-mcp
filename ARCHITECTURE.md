@@ -1,6 +1,6 @@
 # Architecture
 
-This document explains the internal structure of **flow-mcp**, the design decisions behind it,
+This document explains the internal structure of **cyto-mcp**, the design decisions behind it,
 and how to extend it with new tools.
 
 ---
@@ -8,12 +8,12 @@ and how to extend it with new tools.
 ## Repository layout
 
 ```
-flow-mcp/
+cyto-mcp/
 ├── src/
 │   └── flow_mcp/           # Main Python package
 │       ├── __init__.py
 │       ├── server.py       # FastMCP app; registers all tools and starts the server
-│       ├── cli.py          # CLI entry point (`flow-mcp serve [OPTIONS]`)
+│       ├── cli.py          # CLI entry point (`cyto-mcp serve [OPTIONS]`)
 │       ├── config.py       # Pydantic-based server configuration
 │       ├── errors.py       # Domain error hierarchy
 │       ├── cache.py        # Thread-safe LRU cache for loaded FlowKit Samples

@@ -1,14 +1,14 @@
-# flow-mcp
+# cyto-mcp
 
 > A [Model Context Protocol (MCP)](https://modelcontextprotocol.io/) server that brings
 > flow cytometry analysis to any MCP-capable AI assistant — locally, privately, and for free.
 
 ---
 
-## Why flow-mcp?
+## Why cyto-mcp?
 
 Flow cytometry analysis (FCS files, gating, compensation, clustering) is tedious, error-prone,
-and hard to script. **flow-mcp** lets an AI assistant like Claude or GitHub Copilot drive the
+and hard to script. **cyto-mcp** lets an AI assistant like Claude or GitHub Copilot drive the
 entire analysis pipeline through natural language — while keeping every byte of your data on
 your own machine.
 
@@ -16,7 +16,7 @@ your own machine.
 Cloud LLM  ──HTTPS──►  MCP Client (Claude Desktop / VS Code / Cursor)
                                │  stdio / local HTTP
                                ▼
-                        flow-mcp server  ──►  FCS files on your disk
+                        cyto-mcp server  ──►  FCS files on your disk
 ```
 
 **No data leaves your machine.** The LLM only sees compact summaries, statistics, and images
@@ -53,17 +53,17 @@ that the server sends back.
 ### Install from source
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/flow-mcp.git
-cd flow-mcp
+git clone https://github.com/luangxiao/cyto-mcp.git
+cd cyto-mcp
 uv sync                       # creates .venv and installs all deps
-uv run flow-mcp --help        # verify it works
+uv run cyto-mcp --help        # verify it works
 ```
 
 Or with pip:
 
 ```bash
 pip install -e .
-flow-mcp --help
+cyto-mcp --help
 ```
 
 ### Configure your MCP client
@@ -75,7 +75,7 @@ flow-mcp --help
   "mcpServers": {
     "flow": {
       "command": "uv",
-      "args": ["run", "--directory", "/path/to/flow-mcp", "flow-mcp", "serve",
+      "args": ["run", "--directory", "/path/to/cyto-mcp", "cyto-mcp", "serve",
                "--data-dir", "/path/to/your/fcs/files"],
       "env": {}
     }
@@ -91,7 +91,7 @@ flow-mcp --help
     "flow": {
       "type": "stdio",
       "command": "uv",
-      "args": ["run", "--directory", "${workspaceFolder}", "flow-mcp", "serve",
+      "args": ["run", "--directory", "${workspaceFolder}", "cyto-mcp", "serve",
                "--data-dir", "${workspaceFolder}/data"]
     }
   }
@@ -115,7 +115,7 @@ design decisions, and extension guide.
 ```
 src/flow_mcp/
 ├── server.py          # FastMCP app wiring and startup
-├── cli.py             # click CLI entry point  (`flow-mcp serve`)
+├── cli.py             # click CLI entry point  (`cyto-mcp serve`)
 ├── config.py          # Pydantic settings (data-dir, output-dir, cache size)
 ├── errors.py          # Typed error hierarchy
 ├── cache.py           # LRU in-memory sample cache
@@ -148,17 +148,29 @@ src/flow_mcp/
 
 ---
 
+## Community & Discussion
+
+I'm a solo developer building this in my spare time — I'd genuinely love to hear from you, whether you're a researcher, clinician, bioinformatician, or just curious.
+
+- **Questions / ideas?** → open a [Discussion](https://github.com/luangxiao/cyto-mcp/discussions) — no question is too basic.
+- **Found a bug?** → open an [Issue](https://github.com/luangxiao/cyto-mcp/issues) with steps to reproduce.
+- **Want to share a use-case or analysis workflow?** → post it in [Show and Tell](https://github.com/luangxiao/cyto-mcp/discussions/categories/show-and-tell), I genuinely enjoy seeing real-world applications.
+- **Working on something adjacent** (FlowSOM, batch QC, GatingML)? Start a discussion before building — I'm happy to collaborate or at least avoid duplicated effort.
+
+---
+
 ## Contributing
 
-Contributions, bug reports, and feature requests are welcome!
-Please open an issue before submitting large PRs.
+All contributions are welcome — from typo fixes to new tools. Here's how to get started:
 
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feat/my-feature`)
+1. **Fork** the repository and clone it locally
+2. Create a feature branch: `git checkout -b feat/my-feature`
 3. Install dev dependencies: `uv sync --extra dev`
 4. Run tests: `uv run pytest`
 5. Lint: `uv run ruff check src tests`
-6. Open a pull request
+6. Open a **pull request** with a clear description of what and why
+
+For anything non-trivial, please open an issue or discussion first so we can align on approach before you invest time coding. I'll do my best to review PRs promptly and give constructive feedback.
 
 ---
 

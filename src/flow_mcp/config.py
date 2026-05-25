@@ -15,7 +15,7 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class ServerConfig(BaseSettings):
-    """Runtime configuration for the flow-mcp server."""
+    """Runtime configuration for the cyto-mcp server."""
 
     model_config = SettingsConfigDict(
         env_prefix="FLOW_MCP_",

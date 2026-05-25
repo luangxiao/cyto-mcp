@@ -28,7 +28,7 @@ from flow_mcp.config import ServerConfig
 @click.group()
 @click.version_option(__version__, prog_name="cyto-mcp")
 def main() -> None:
-    """flow-mcp — MCP server for flow cytometry analysis."""
+    """cyto-mcp — MCP server for flow cytometry analysis."""
 
 
 @main.command()
@@ -70,7 +70,7 @@ def serve(
     plot_dpi: int | None,
     transport: str,
 ) -> None:
-    """Start the flow-mcp MCP server."""
+    """Start the cyto-mcp MCP server."""
     # Build config, merging CLI flags over env / defaults
     overrides: dict = {}
     if data_dir is not None:
@@ -135,7 +135,7 @@ def check(data_dir: Path | None) -> None:
     help="Allow pre-release versions.",
 )
 def update(pre: bool) -> None:
-    """Update flow-mcp to the latest version from PyPI.
+    """Update cyto-mcp to the latest version from PyPI.
 
     Detects whether the package was installed with ``uv`` or ``pip`` and
     runs the appropriate upgrade command.
@@ -144,11 +144,11 @@ def update(pre: bool) -> None:
     --------
     Upgrade to the latest stable release::
 
-        flow-mcp update
+        cyto-mcp update
 
     Upgrade to the latest pre-release::
 
-        flow-mcp update --pre
+        cyto-mcp update --pre
     """
     import shutil
     import subprocess

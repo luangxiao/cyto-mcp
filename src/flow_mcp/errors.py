@@ -1,4 +1,4 @@
-"""Typed error hierarchy for flow-mcp.
+"""Typed error hierarchy for cyto-mcp.
 
 All domain errors inherit from ``FlowMcpError`` so callers can catch them
 with a single ``except FlowMcpError`` clause and still distinguish sub-types
@@ -9,7 +9,7 @@ from __future__ import annotations
 
 
 class FlowMcpError(Exception):
-    """Base class for all flow-mcp errors."""
+    """Base class for all cyto-mcp errors."""
 
     def to_dict(self) -> dict[str, str]:
         """Serialize to a JSON-safe dict suitable for returning from a tool."""
