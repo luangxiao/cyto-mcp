@@ -46,24 +46,30 @@ that the server sends back.
 ### Prerequisites
 
 - Python 3.11+
-- [uv](https://docs.astral.sh/uv/) (recommended) **or** pip
 - An MCP-capable client: [Claude Desktop](https://claude.ai/download),
   [VS Code + GitHub Copilot](https://code.visualstudio.com/), or [Cursor](https://cursor.sh/)
 
-### Install from source
+### Install from PyPI *(recommended)*
+
+```bash
+pip install cyto-mcp
+cyto-mcp --help               # verify it works
+```
+
+Or with [uv](https://docs.astral.sh/uv/) (faster, isolated):
+
+```bash
+uv tool install cyto-mcp
+cyto-mcp --help
+```
+
+### Install from source *(for contributors / development)*
 
 ```bash
 git clone https://github.com/luangxiao/cyto-mcp.git
 cd cyto-mcp
 uv sync                       # creates .venv and installs all deps
 uv run cyto-mcp --help        # verify it works
-```
-
-Or with pip:
-
-```bash
-pip install -e .
-cyto-mcp --help
 ```
 
 ### Configure your MCP client
@@ -74,10 +80,8 @@ cyto-mcp --help
 {
   "mcpServers": {
     "flow": {
-      "command": "uv",
-      "args": ["run", "--directory", "/path/to/cyto-mcp", "cyto-mcp", "serve",
-               "--data-dir", "/path/to/your/fcs/files"],
-      "env": {}
+      "command": "cyto-mcp",
+      "args": ["serve", "--data-dir", "/path/to/your/fcs/files"]
     }
   }
 }
@@ -90,13 +94,16 @@ cyto-mcp --help
   "servers": {
     "flow": {
       "type": "stdio",
-      "command": "uv",
-      "args": ["run", "--directory", "${workspaceFolder}", "cyto-mcp", "serve",
-               "--data-dir", "${workspaceFolder}/data"]
+      "command": "cyto-mcp",
+      "args": ["serve", "--data-dir", "/path/to/your/fcs/files"]
     }
   }
 }
 ```
+
+> **Note for VS Code:** if `cyto-mcp` is not on VS Code's PATH, use the full path to the
+> executable (e.g. `C:/Users/you/AppData/Roaming/Python/Scripts/cyto-mcp.exe` on Windows, or
+> run `which cyto-mcp` on macOS/Linux to find it).
 
 ### Try it
 
@@ -155,7 +162,6 @@ I'm a solo developer building this in my spare time — I'd genuinely love to he
 - **Questions / ideas?** → open a [Discussion](https://github.com/luangxiao/cyto-mcp/discussions) — no question is too basic.
 - **Found a bug?** → open an [Issue](https://github.com/luangxiao/cyto-mcp/issues) with steps to reproduce.
 - **Want to share a use-case or analysis workflow?** → post it in [Show and Tell](https://github.com/luangxiao/cyto-mcp/discussions/categories/show-and-tell), I genuinely enjoy seeing real-world applications.
-- **Working on something adjacent** (FlowSOM, batch QC, GatingML)? Start a discussion before building — I'm happy to collaborate or at least avoid duplicated effort.
 
 ---
 
